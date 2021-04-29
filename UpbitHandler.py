@@ -12,7 +12,7 @@ from upbitpy import Upbitpy
 
 class upbit_function:
     upbit = Upbitpy()
-    target_coin =''
+    target_coin ='KRW-SXP'
     INTERVAL_MIN = 1
     # 업비트 응답시간 대기
 
@@ -69,13 +69,32 @@ class upbit_function:
     def get_minutes_candle(self):
         upbit = Upbitpy()
         print(self.target_coin)
-        keys = ['opening_price', 'trade_price', 'high_price', 'low_price', 'timestamp']
+        keys = ['opening_price', 'trade_price', 'high_price', 'low_price','timestamp']
         candle = self.upbit.get_minutes_candles(self.INTERVAL_MIN, self.target_coin)[0]
         print('[{}] {}'.format(datetime.datetime.now().strftime('%Y%m%d %H:%M:%S'),self.target_coin))
         for key in keys:
             print('\t{}: {}'.format(key, candle[key]))
-        self.wait(self.INTERVAL_MIN)
 
+        if (candle['opening_price'] < candle['trade_price']):
+            print('양봉')
+            return 1
+
+        elif (candle['opening_price'] > candle['trade_price']):
+            print('음봉')
+            return 0
+
+        elif (candle['opening_price'] == candle['trade_price']):
+            print('횡보')
+            return 2
+
+
+
+    def get_minutes_candle_2(self):
+        upbit = Upbitpy()
+        print(self.target_coin)
+        df = pyupbit.get_ohlcv("KRW-BTC")
+        print(df)
+        return df
 
 
 
@@ -137,3 +156,4 @@ class upbit_function:
         print('볼린저뱉드 하단: ', round(band_low, 2))
         print('')
         time.sleep(1)
+
