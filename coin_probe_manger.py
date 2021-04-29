@@ -15,7 +15,7 @@ Buyying_Signale = False
 
 access_key = []
 secret     = []
-
+signal = []
 
 def thread_LossCut(loss_cut):
     upbit_function()
@@ -33,19 +33,26 @@ def thread_LossCut(loss_cut):
 def thread_getMinCandle():
     candle = upbit_function.get_minutes_candle(upbit_function)
     Check_signal = [False,True,True]
-    signal = []
+
     #첫 음봉 발생
     if candle == 0 and len(signal)==0:
-        signal.append((True))
+        signal.append((False))
+        print('첫음봉 발생')
+        print(signal)
 
     #두번째 양봉 발생
-    if len(signal)== 1 and candle!=2:
+    elif len(signal)== 1 and candle!=2:
         if  candle ==1:
             coin_check.check_siganl(coin_check,True)
+            print('양봉 발생')
+            print(signal)
         else:
             signal.clear()
+            print('양봉 미발생')
+            print(signal)
         if len(signal)==3 and signal == Check_signal:
             print('매수신호 발생')
+            print(signal)
             signal.clear()
 
 
